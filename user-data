@@ -47,7 +47,7 @@ coreos:
 
         [Service]
         Type=oneshot
-        ExecStart=for i in $(echo ubuntu anichols/jenkins thefactory/zookeeper-exhibitor redjack/mesos-master redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/nerve-etcd); do /usr/bin/docker pull $i; done
+        ExecStart=/bin/bash -c 'for i in $(echo ubuntu anichols/jenkins thefactory/zookeeper-exhibitor redjack/mesos-master redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/nerve-etcd); do /usr/bin/docker pull $i; done; docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter; docker run --rm jpetazzo/nsenter cat /docker-enter > /usr/local/bin/docker-enter;chmod 755 /usr/local/bin/docker-enter'
     - name: synapse-jenkins.service
       command: start
       enable: true
@@ -65,7 +65,7 @@ coreos:
         ExecStopPost=/usr/bin/docker rm jenkins_synapse
     - name: docker-api.service
       command: start
-      runtime: no
+      enable: true
       content: |
         Description=Exposes the Docker API on port 4242
         After=docker.service
@@ -74,7 +74,7 @@ coreos:
         [Service]
         TimeoutStartSec=600
         ExecStartPre=/usr/bin/docker pull bobtfish/synapse-etcd-amb
-        ExecStart=docker run --rm --name docker_api -p 4242:4242 -v /var/run/docker.sock:/var/run/docker.sock bobtfish/docker-socket-http-proxy
+        ExecStart=/usr/bin/docker run --rm --name docker_api -p 4242:4242 -v /var/run/docker.sock:/var/run/docker.sock bobtfish/docker-socket-http-proxy
         ExecStop=/usr/bin/docker kill docker_api
         ExecStopPost=/usr/bin/docker rm docker_api
 
