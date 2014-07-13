@@ -1,0 +1,12 @@
+[Unit]
+Description=Jenkins
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull anichols/jenkins
+ExecStart=/usr/bin/docker run -rm -p 8080:8080 --name jenkins -t anichols/jenkins
+ExecStop=/usr/bin/docker kill jenkins
+ExecStopPost=/usr/bin/docker rm jenkins
+

@@ -8,7 +8,7 @@ users:
 coreos:
   etcd:
       #generate a new token for each unique cluster from https://discovery.etcd.io/new
-      discovery: https://discovery.etcd.io/4fb7e466bdf6a2f32d7a0b2aff57039f
+      discovery: https://discovery.etcd.io/2820036d28c98835b6b36bdaf74ef98f
       addr: $public_ipv4:4001
       peer-addr: $public_ipv4:7001
   units:
@@ -47,8 +47,8 @@ coreos:
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/docker pull bobtfish/synapse-etcd-amb ; /usr/bin/docker pull bobtfish/app-envshow ; /usr/bin/docker pull bobtfish/nerve-etcd
-    - name: synapse-testapp.service
+        ExecStart=for i in $(echo ubuntu anichols/jenkins thefactory/zookeeper-exhibitor redjack/mesos-master redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/nerve-etcd); do /usr/bin/docker pull $i; done
+    - name: synapse-jenkins.service
       command: start
       enable: true
       content: |
@@ -60,7 +60,7 @@ coreos:
         [Service]
         TimeoutStartSec=600
         ExecStartPre=/usr/bin/docker pull bobtfish/synapse-etcd-amb
-        ExecStart=/bin/bash -c "HOST_IP=$(/bin/ifconfig enp0s8 | awk '/inet /{print $2}') && exec /usr/bin/docker run --rm --name testapp_synapse -e SYNAPSE_APP=testapp -e SYNAPSE_PORT=8000 -e ETCD_PORT_4001_TCP_ADDR=$HOST_IP -e ETCD_PORT_4001_TCP_PORT=4001 -p 8000:8000 bobtfish/synapse-etcd-amb"
-        ExecStop=/usr/bin/docker kill testapp_synapse
-        ExecStopPost=/usr/bin/docker rm testapp_synapse
+        ExecStart=/bin/bash -c "HOST_IP=$(/bin/ifconfig enp0s8 | awk '/inet /{print $2}') && exec /usr/bin/docker run --rm --name jenkins_synapse -e SYNAPSE_APP=jenkins -e SYNAPSE_PORT=8000 -e ETCD_PORT_4001_TCP_ADDR=$HOST_IP -e ETCD_PORT_4001_TCP_PORT=4001 -p 80:8000 bobtfish/synapse-etcd-amb"
+        ExecStop=/usr/bin/docker kill jenkins_synapse
+        ExecStopPost=/usr/bin/docker rm jenkins_synapse
 
