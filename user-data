@@ -53,7 +53,7 @@ coreos:
       enable: true
       content: |
         [Unit]
-        Description=Synapse exposing Test App
+        Description=Synapse exposing Jenkins
         After=docker.service
         Requires=docker.service
 
@@ -63,4 +63,18 @@ coreos:
         ExecStart=/bin/bash -c "HOST_IP=$(/bin/ifconfig enp0s8 | awk '/inet /{print $2}') && exec /usr/bin/docker run --rm --name jenkins_synapse -e SYNAPSE_APP=jenkins -e SYNAPSE_PORT=8000 -e ETCD_PORT_4001_TCP_ADDR=$HOST_IP -e ETCD_PORT_4001_TCP_PORT=4001 -p 80:8000 bobtfish/synapse-etcd-amb"
         ExecStop=/usr/bin/docker kill jenkins_synapse
         ExecStopPost=/usr/bin/docker rm jenkins_synapse
+    - name: docker-api.service
+      command: start
+      runtime: no
+      content: |
+        Description=Exposes the Docker API on port 4242
+        After=docker.service
+        Requires=docker.service
+
+        [Service]
+        TimeoutStartSec=600
+        ExecStartPre=/usr/bin/docker pull bobtfish/synapse-etcd-amb
+        ExecStart=docker run --rm --name docker_api -p 4242:4242 -v /var/run/docker.sock:/var/run/docker.sock bobtfish/docker-socket-http-proxy
+        ExecStop=/usr/bin/docker kill docker_api
+        ExecStopPost=/usr/bin/docker rm docker_api
 
