@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use YAML;
+use File::Basename qw/ dirname /;
+YAML::LoadFile(dirname($0) . "/../user-data");
+
