@@ -1,0 +1,11 @@
+[Unit]
+Description=Jenkins
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull bobtfish/docker-jenkins-volume
+ExecStart=/usr/bin/docker run -rm -p --name jenkins_volume -t bobtfish/docker-jenkins-volume /bin/true
+
