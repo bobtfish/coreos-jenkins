@@ -7,5 +7,5 @@ Requires=docker.service
 Type=oneshot
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/docker pull bobtfish/docker-jenkins-volume
-ExecStart=/usr/bin/docker run -rm -p --name jenkins_volume -t bobtfish/docker-jenkins-volume /bin/true
+ExecStart=/usr/bin/docker run --rm --name jenkins_volume -t bobtfish/docker-jenkins-volume /bin/true
 
