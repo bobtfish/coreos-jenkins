@@ -38,6 +38,16 @@ coreos:
 
         [Install]
         WantedBy=sockets.target
+    - name: gitconfig.service
+      command: start
+      runtime: no
+      content: |
+        [Unit]
+        Description=git config
+
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/bash -c 'git config --global user.email "bobtfish@bobtfish.net";git config --global user.name "Tomas Doran"'
     - name: pullcontainers.service
       command: start
       runtime: no
