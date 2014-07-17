@@ -1,5 +1,5 @@
 [Unit]
-Description=Jenkins
+Description=Jenkins data storage volume
 After=docker.service
 Requires=docker.service
 
