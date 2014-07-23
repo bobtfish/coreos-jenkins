@@ -57,7 +57,7 @@ coreos:
 
         [Service]
         Type=oneshot
-        ExecStart=/bin/bash -c 'for i in $(echo ubuntu busybox bobtfish/docker-jenkins-volume anichols/jenkins thefactory/zookeeper-exhibitor redjack/mesos-master redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/nerve-etcd); do /usr/bin/docker pull $i; done'
+        ExecStart=/bin/bash -c 'for i in $(echo ubuntu busybox bobtfish/docker-jenkins-volume anichols/jenkins thefactory/zookeeper-exhibitor redjack/mesos-master redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/nerve-etcd zookeeper:3.4.5); do /usr/bin/docker pull $i; done'
     - name: synapse-jenkins.service
       command: start
       enable: true
