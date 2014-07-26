@@ -4,7 +4,7 @@ Description=Zookeeper
 [Service]
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/docker pull bobtfish/zookeeper:latest
-ExecStart=/usr/bin/docker run --rm -p 2181:2181 -p 2888:2888 -p 3888:3888 --name zookeeper -t bobtfish/zookeeper:latest
+ExecStart=/bin/bash -c "exec /usr/bin/docker run --rm -e ZK_ID=$(hostname | sed -e's/[^0-9]*//' | sed -e's/^0*//') -e ZK_HOST_$(hostname | sed -e's/[^0-9]*//' | sed -e's/^0*//')=$(/bin/ifconfig enp0s8 | awk '/inet /{print $2}'):2888:3888 -p 2181:2181 -p 2888:2888 -p 3888:3888 --name zookeeper -t bobtfish/zookeeper:latest"
 ExecStop=/usr/bin/docker kill zookeeper 
 ExecStopPost=/usr/bin/docker rm zookeeper 
 
