@@ -1,13 +1,1 @@
-[Unit]
-Description=Mesos Slave
-
-[Service]
-TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker pull redjack/mesos-slave
-ExecStart=/usr/bin/docker run --rm --name mesosslave -t redjack/mesos-slave
-ExecStop=/usr/bin/docker kill mesosslave
-ExecStopPost=/usr/bin/docker rm mesosslave 
-
-[X-Fleet]
-X-Conflicts=mesosslave.app.*.service
-
+mesos-slave.app.1.service
