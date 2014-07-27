@@ -58,6 +58,7 @@ coreos:
         [Service]
         Type=oneshot
         ExecStart=/bin/bash -c "etcdctl set /host/$(hostname | sed -e's/[^0-9]*//' | sed -e's/^0*//') $(/bin/ifconfig enp0s8 | awk '/inet /{print $2}')"
+        Requires=etcd.service
     - name: pullcontainers.service
       command: start
       runtime: no
