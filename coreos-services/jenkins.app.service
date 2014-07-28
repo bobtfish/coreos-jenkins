@@ -1,7 +1,7 @@
 [Unit]
 Description=Jenkins
 After=jenkins.volume.service
-Requires=jenkins.volume.service
+Requires=jenkins.volume.service,pullcontainers.service
 
 [Service]
 TimeoutStartSec=0

@@ -1,7 +1,7 @@
 [Unit]
 Description=Jenkins data storage volume
 After=docker.service
-Requires=docker.service
+Requires=docker.service,pullcontainers.service
 
 [Service]
 Type=oneshot
