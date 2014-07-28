@@ -54,7 +54,7 @@ coreos:
       content: |
         [Unit]
         Description=etcd register host
-	Requires=etcd.service
+        Requires=etcd.service
 
         [Service]
         Type=oneshot
