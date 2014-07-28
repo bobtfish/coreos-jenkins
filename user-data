@@ -1,9 +1,9 @@
 #cloud-config
 
-users:
-  - name: tdoran
-    sudo: true
-    coreos-ssh-import-github: bobtfish
+#users:
+#  - name: tdoran
+#    sudo: true
+#    coreos-ssh-import-github: bobtfish
 
 coreos:
   etcd:
