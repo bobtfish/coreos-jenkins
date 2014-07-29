@@ -1,7 +1,9 @@
 [Unit]
 Description=Jenkins
 After=jenkins.volume.service
-Requires=jenkins.volume.service,pullcontainers.service
+Requires=jenkins.volume.service
+Requires=pullcontainers.service
+Requires=docker.service
 
 [Service]
 TimeoutStartSec=0

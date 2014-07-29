@@ -1,6 +1,7 @@
 [Unit]
 Description=Mesos Slave
-Requires=docker.service,pullcontainers.service
+Requires=docker.service
+Requires=pullcontainers.service
 
 [Service]
 TimeoutStartSec=0
