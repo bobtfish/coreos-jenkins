@@ -1,7 +1,6 @@
 [Unit]
 Description=Mesos Master
 Requires=docker.service
-Requires=pullcontainers.service
 
 [Service]
 TimeoutStartSec=0

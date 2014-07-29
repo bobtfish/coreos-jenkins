@@ -2,7 +2,6 @@
 Description=Jenkins Health checker
 After=docker.service
 Requires=docker.service
-Requires=pullcontainers.service
 BindsTo=jenkins.app.service
 
 [Service]
