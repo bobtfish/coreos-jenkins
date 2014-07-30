@@ -6,8 +6,8 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker pull anichols/jenkins
-ExecStart=/usr/bin/docker run --rm -p 8080:8080 --name jenkins -t --volumes-from jenkins_volume anichols/jenkins
+ExecStartPre=/usr/bin/docker pull bobtfish/jenkins
+ExecStart=/usr/bin/docker run --rm -p 8080:8080 --name jenkins -t --volumes-from jenkins_volume bobtfish/jenkins
 ExecStop=/usr/bin/docker kill jenkins
 ExecStopPost=/usr/bin/docker rm jenkins
 
