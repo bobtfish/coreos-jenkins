@@ -8,7 +8,7 @@
 coreos:
   etcd:
       #generate a new token for each unique cluster from https://discovery.etcd.io/new
-      discovery: https://discovery.etcd.io/a504a2b5d0a1e33c99e60808a5a9dfc1
+      discovery: https://discovery.etcd.io/36519521b61ec48f91c98156c36250bd
       addr: $public_ipv4:4001
       peer-addr: $public_ipv4:7001
   units:
