@@ -3,16 +3,20 @@ Description=Jenkins
 After=jenkins.volume.service
 Requires=jenkins.volume.service
 Requires=docker.service
-Requires=mesosmaster.app.*.service
+Requires=mesosmaster.app.1.service
 
 [Service]
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker kill jenkins
+ExecStartPre=/usr/bin/docker rm jenkins
 ExecStartPre=/usr/bin/docker pull bobtfish/jenkins
+ExecStartPre=/usr/bin/docker pull bobtfish/docker-jenkins-volume
+ExecStartPre=/usr/bin/docker run --name jenkins_volume -t bobtfish/docker-jenkins-volume /bin/true
 ExecStart=/usr/bin/docker run --rm -p 8080:8080 --name jenkins -t --volumes-from jenkins_volume --link mesos_master bobtfish/jenkins
-ExecStop=/usr/bin/docker kill jenkins
-ExecStopPost=/usr/bin/docker rm jenkins
+ExecStop=/usr/bin/docker stop jenkins
+ExecStopPost=/usr/bin/docker kill jenkins
 
 [X-Fleet]
 X-ConditionMachineOf=jenkins.volume.service
-X-ConditionMachineOf=mesosmaster.app.*.service
+X-ConditionMachineOf=mesosmaster.app.1.service
 
