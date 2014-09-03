@@ -94,7 +94,9 @@ coreos:
 
         [Service]
         TimeoutStartSec=600
-        ExecStartPre=/usr/bin/docker pull bobtfish/synapse-etcd-amb
+	ExecStartPre=/usr/bin/docker kill docker_api
+	ExecStartPre=/usr/bin/docker rm docker_api
+        ExecStartPre=/usr/bin/docker pull bobtfish/docker-socket-http-proxy
         ExecStart=/usr/bin/docker run --rm --name docker_api -p 4242:4242 -v /var/run/docker.sock:/var/run/docker.sock bobtfish/docker-socket-http-proxy
         ExecStop=/usr/bin/docker kill docker_api
         ExecStopPost=/usr/bin/docker rm docker_api

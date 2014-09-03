@@ -1,6 +1,7 @@
 [Unit]
 Description=Zookeeper
 Requires=docker.service
+Requires=etcd_hostregister.service
 
 [Service]
 TimeoutStartSec=0
