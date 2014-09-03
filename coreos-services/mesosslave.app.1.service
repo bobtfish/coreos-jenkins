@@ -5,6 +5,8 @@ Requires=docker.service
 [Service]
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/docker pull redjack/mesos-slave
+ExecStartPre=/usr/bin/docker kill mesosslave
+ExecStartPre=/usr/bin/docker rm mesosslave
 ExecStart=/usr/bin/docker run --rm --name mesosslave -t redjack/mesos-slave
 ExecStop=/usr/bin/docker kill mesosslave
 ExecStopPost=/usr/bin/docker rm mesosslave 
