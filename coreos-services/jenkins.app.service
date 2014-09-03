@@ -1,7 +1,6 @@
 [Unit]
 Description=Jenkins
 After=jenkins.volume.service
-Requires=jenkins.volume.service
 Requires=docker.service
 Requires=mesosmaster.app.1.service
 
@@ -17,6 +16,5 @@ ExecStop=/usr/bin/docker stop jenkins
 ExecStopPost=/usr/bin/docker kill jenkins
 
 [X-Fleet]
-X-ConditionMachineOf=jenkins.volume.service
 X-ConditionMachineOf=mesosmaster.app.1.service
 
