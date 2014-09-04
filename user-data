@@ -24,6 +24,21 @@ coreos:
         [Service]
         Environment=FLEET_PUBLIC_IP=$public_ipv4
         ExecStart=/usr/bin/fleet
+    - name: docker.service
+      command: restart
+      content: |
+        [Unit]
+        Description=Docker Application Container Engine 
+        Documentation=http://docs.docker.io
+        After=network.target
+        [Service]
+        ExecStartPre=/bin/mount --make-rprivate /
+        # Run docker but don't have docker automatically restart
+        # containers. This is a job for systemd and unit files.
+        ExecStart=/bin/bash -c 'HTTP_PROXY=$(netstat -rn | grep "^0.0.0.0 " | cut -d " " -f10):8080 exec /usr/bin/docker -d -s=btrfs -r=false -H fd://'
+
+        [Install]
+        WantedBy=multi-user.target
     - name: docker-tcp.socket
       command: start
       enable: true
