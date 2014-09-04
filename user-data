@@ -59,16 +59,6 @@ coreos:
         [Service]
         Type=oneshot
         ExecStart=/bin/bash -c "sleep 10 ; etcdctl set /host/$(hostname | sed -e's/[^0-9]*//' | sed -e's/^0*//') $(/bin/ifconfig enp0s8 | awk '/inet /{print $2}')"
-    - name: pullcontainers.service
-      command: start
-      runtime: no
-      content: |
-        [Unit]
-        Description=pullcontainers
-
-        [Service]
-        Type=oneshot
-        ExecStart=/bin/bash -c 'for i in $(echo redjack/mesos-slave bobtfish/synapse-etcd-amb bobtfish/zookeeper bobtfish/docker-socket-http-proxy); do /usr/bin/docker pull $i; done'
     - name: synapse-jenkins.service
       command: start
       enable: true
@@ -79,7 +69,7 @@ coreos:
         Requires=docker.service
 
         [Service]
-        TimeoutStartSec=600
+        TimeoutStartSec=0
         ExecStartPre=/usr/bin/docker pull bobtfish/synapse-etcd-amb
         ExecStart=/bin/bash -c "HOST_IP=$(/bin/ifconfig enp0s8 | awk '/inet /{print $2}') && exec /usr/bin/docker run --rm --name jenkins_synapse -e SYNAPSE_APP=jenkins -e SYNAPSE_PORT=8000 -e ETCD_PORT_4001_TCP_ADDR=$HOST_IP -e ETCD_PORT_4001_TCP_PORT=4001 -p 80:8000 bobtfish/synapse-etcd-amb"
         ExecStop=/usr/bin/docker kill jenkins_synapse
@@ -93,7 +83,7 @@ coreos:
         Requires=docker.service
 
         [Service]
-        TimeoutStartSec=600
+        TimeoutStartSec=0
         ExecStartPre=/usr/bin/docker pull bobtfish/docker-socket-http-proxy
         ExecStart=/usr/bin/docker run --rm --name docker_api -p 4242:4242 -v /var/run/docker.sock:/var/run/docker.sock bobtfish/docker-socket-http-proxy
         ExecStop=/usr/bin/docker kill docker_api
